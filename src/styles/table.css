@@ -8,12 +8,14 @@
 .table-scroll {
   flex: 1;
   overflow: auto;
-  min-height: 0
+  min-height: 0;
+  scrollbar-color: var(--color-header-bg) var(--color-table-bg);
 }
 
 .users-table {
   width: 100%;
   min-width: 1400px;
+  table-layout: fixed;
   border-collapse: collapse;
   background-color: var(--color-table-bg);
   color: var(--color-text-primary);
@@ -34,6 +36,7 @@
   padding: 14px 16px;
   font-size: 14px;
   font-weight: 600;
+  min-width: 80px;
   background-color: var(--color-header-bg);
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -73,11 +76,29 @@
   color: var(--color-accent);
 }
 
+.resize-handle {
+  position: absolute;
+  right: -3px;
+  top: 0;
+  width: 6px;
+  height: 100%;
+  cursor: col-resize;
+  z-index: 2;
+  background: var(--color-accent-hover);
+  opacity: 0;
+}
+
+.resize-handle:hover {
+  opacity: 1;
+  transition: opacity 0.1s ease;
+}
+
 /* body */
 
 .users-table td {
   padding: 14px 16px;
   font-size: 14px;
+  overflow-x: hidden;
 }
 
 /* gender pills */

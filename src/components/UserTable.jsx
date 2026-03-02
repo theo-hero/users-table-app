@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import UserModal from "./UserModal";
 import "../styles/table.css";
 import "../styles/loader.css";
 import Pagination from "./Pagination";
 import { useUsers } from "./useUsers";
 import HeaderCell from "./HeaderCell";
+import { useColumnResize } from "./useColumnResize";
 
 const COLUMNS = [
     {
@@ -72,13 +73,16 @@ export default function UserTable() {
         filter
     } = useUsers();
 
+    const tableRef = useRef(null);
+    useColumnResize(tableRef);
+
     return (
         <>
             {loading && <div className="loader-container"><div className="loader"></div></div>}
             {openFilterField && <div className="overlay" onClick={() => setOpenFilterField(null)} />}
             <div class="table-wrapper">
                 <div class="table-scroll">
-                    <table className='users-table'>
+                    <table className='users-table' ref={tableRef}>
                         <thead>
                             <tr>
                                 {COLUMNS.map((column) => {

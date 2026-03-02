@@ -5,7 +5,7 @@
 }
 
 .loader {
-    width: 100px;
+    width: 80px;
     padding: 12px;
     margin-top: calc(50vh - 50px);
     margin-left: calc(50vw - 50px);

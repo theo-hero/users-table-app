@@ -44,6 +44,7 @@ export default function HeaderCell({
             )}
           </>
         )}
+        <div class="resize-handle"></div>
       </div>
     </th>
   );
