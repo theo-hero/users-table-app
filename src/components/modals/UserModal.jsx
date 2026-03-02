@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
-import { fetchSingleUser } from "../../service/api";
-import "../styles/modal.css";
+import { fetchSingleUser } from "../../../service/api";
+import "../../styles/modal.css";
+import { useError } from "../../context/ErrorContext";
 
 //'lastName,firstName,age,gender,phone,email,address,height,weight,image'
 
@@ -8,14 +9,18 @@ export default function UserModal({ userId, close }) {
 
     const [user, setUser] = useState(null);
 
+    const { setError } = useError();
+
     useEffect(() => {
         if (!userId) return;
 
-        fetchSingleUser(userId).then(data => {
+        fetchSingleUser(userId)
+        .then(data => {
             console.log(data);
             setUser(data);
-        });
-    }, [userId]);
+        })
+        .catch((e) => setError(e));
+    }, [userId, setError]);
 
     return (
         <div id="user-modal" className={`modal ${userId ? "shown" : ""}`} onClick={close}>

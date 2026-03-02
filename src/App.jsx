@@ -1,13 +1,23 @@
 import './styles/App.css'
-import UserTable from './components/UserTable'
+import UserTable from './components/table/UserTable'
+import { ErrorProvider } from './context/ErrorContext'
+import ErrorModal from './components/modals/ErrorModal'
 
-function App() {
-
+function MainPage() {
 
   return (
     <>
-        <UserTable />
+      <ErrorModal />
+      <UserTable />
     </>
+  )
+}
+
+function App() {
+  return (
+    <ErrorProvider>
+      <MainPage />
+    </ErrorProvider>
   )
 }
 

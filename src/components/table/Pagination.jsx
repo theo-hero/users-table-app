@@ -1,4 +1,4 @@
-import "../styles/pagination.css"
+import "../../styles/pagination.css"
 import { useMemo, useState, useEffect } from "react";
 
 const getPages = (current, total, delta) => {

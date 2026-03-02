@@ -1,4 +1,4 @@
-import "../styles/options.css";
+import "../../styles/options.css";
 
 // current api doesn't support multiple choice so the component is made for selecting only one option
 export default function Options({ options, onChange, checkedOption }) {

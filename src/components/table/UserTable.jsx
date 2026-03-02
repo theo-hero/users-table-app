@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
-import UserModal from "./UserModal";
-import "../styles/table.css";
-import "../styles/loader.css";
+import UserModal from "../modals/UserModal";
+import "../../styles/table.css";
+import "../../styles/loader.css";
 import Pagination from "./Pagination";
 import { useUsers } from "./useUsers";
 import HeaderCell from "./HeaderCell";
@@ -13,18 +13,21 @@ const COLUMNS = [
         field: 'lastName',
         sortable: true,
         className: 'col-lastname',
+        resizable: true,
     },
     {
         label: 'Имя',
         field: 'firstName',
         sortable: true,
         className: 'col-firstname',
+        resizable: true,
     },
     {
         label: 'Возраст',
         field: 'age',
         sortable: true,
         className: 'col-age',
+        resizable: true,
     },
     {
         label: 'Пол',
@@ -32,28 +35,33 @@ const COLUMNS = [
         sortable: true,
         filtrable: true,
         render: (value) => <div className={value}>{value}</div>,
-        filterOptions: ["male", "female"]
+        filterOptions: ["male", "female"],
+        resizable: true,
     },
     {
         label: 'Номер телефона',
         field: 'phone',
         sortable: true,
+        resizable: true,
     },
     {
         label: 'Email',
         field: 'email',
         sortable: false,
         className: 'col-email',
+        resizable: true,
     },
     {
         label: 'Страна',
         field: 'country',
         sortable: false,
+        resizable: true,
     },
     {
         label: 'Город',
         field: 'city',
         sortable: false,
+        resizable: false,
     },
 ];
 

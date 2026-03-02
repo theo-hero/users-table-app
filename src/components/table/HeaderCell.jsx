@@ -1,5 +1,5 @@
-import ArrowsIcon from "../assets/sorting.svg?react";
-import FilterIcon from "../assets/filter.svg?react";
+import ArrowsIcon from "../../assets/sorting.svg?react";
+import FilterIcon from "../../assets/filter.svg?react";
 import Options from "./Options";
 
 // tried to make the component as dumb as possible (responsible for ui only)
@@ -44,7 +44,7 @@ export default function HeaderCell({
             )}
           </>
         )}
-        <div class="resize-handle"></div>
+        {column.resizable && <div className="resize-handle"></div>}
       </div>
     </th>
   );

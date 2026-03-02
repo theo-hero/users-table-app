@@ -15,7 +15,7 @@ export function useColumnResize(tableRef) {
 
             const onMouseMove = (e) => {
                 const newWidth = startWidth + (e.clientX - startX);
-                const min = 80;
+                const min = 50;
                 const constrainedWidth = Math.max(newWidth, min);
                 th.style.width = `${constrainedWidth}px`;
             };

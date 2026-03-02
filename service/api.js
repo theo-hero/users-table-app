@@ -62,39 +62,29 @@ export async function fetchUsersData(page = 0, sortBy, order, filterField, filte
 
     url.search = params.toString();
 
-    try {
-        const data = await fetchWithTimeout(url);
-        return {
-            users: data.users.map(user => ({
-                ...userMapper(user),
-                country: user.address?.country || "",
-                city: user.address?.city || ""
-            })),
-            total: data.total,
-            skip: data.skip
-        };
-    } catch (e) {
-        console.log(e);
-        return null;
-    }
+    const data = await fetchWithTimeout(url);
+    return {
+        users: data.users.map(user => ({
+            ...userMapper(user),
+            country: user.address?.country || "",
+            city: user.address?.city || ""
+        })),
+        total: data.total,
+        skip: data.skip
+    };
 }
 
 export async function fetchSingleUser(id) {
     console.log(id);
     let url = `${BASE_URL}/users/${id}?select=${USER_DETAILS}`;
 
-    try {
-        const data = await fetchWithTimeout(url);
-        const userData = {
-            ...userMapper(data),
-            height: data.height,
-            weight: data.weight,
-            avatar: data.image,
-            address: data.address
-        }
-        return userData;
-    } catch (e) {
-        console.log(e);
-        return null;
+    const data = await fetchWithTimeout(url);
+    const userData = {
+        ...userMapper(data),
+        height: data.height,
+        weight: data.weight,
+        avatar: data.image,
+        address: data.address
     }
+    return userData;
 }

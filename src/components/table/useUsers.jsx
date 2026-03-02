@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import { fetchUsersData, MAX_ROWS } from "../../service/api";
+import { fetchUsersData, MAX_ROWS } from "../../../service/api";
+import { useError } from "../../context/ErrorContext";
 
 const ORDER = Object.freeze({
     ASC: "ascending",
@@ -17,6 +18,8 @@ export function useUsers() {
     const [totalPages, setTotalPages] = useState(0);
     const [loading, setLoading] = useState(true);
 
+    const { setError } = useError();
+
     useEffect(() => {
         fetchUsersData(page - 1, sortField?.field, sortField?.order, filter?.fieldName, filter?.value)
             .then(data => {
@@ -24,8 +27,9 @@ export function useUsers() {
                 setUsers(data.users);
                 setTotalPages(Math.ceil(data.total / MAX_ROWS));
             })
+            .catch((e) => setError(e))
             .finally(() => setLoading(false));
-    }, [page, sortField, filter]);
+    }, [page, sortField, filter, setError]);
 
     const changeSorting = useCallback((fieldName) => {
         setLoading(true);
