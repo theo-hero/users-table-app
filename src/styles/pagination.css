@@ -37,12 +37,6 @@
   cursor: default;
 }
 
-.page-btn.active:hover {
-  background: var(--color-accent-hover);
-  border-color: var(--color-accent-hover);
-  color: white;
-}
-
 .page-btn:disabled {
   opacity: 0.45;
   cursor: auto;

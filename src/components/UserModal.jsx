@@ -4,7 +4,7 @@ import "../styles/modal.css";
 
 //'lastName,firstName,age,gender,phone,email,address,height,weight,image'
 
-export default function ({ userId, close }) {
+export default function UserModal({ userId, close }) {
 
     const [user, setUser] = useState(null);
 
@@ -19,19 +19,49 @@ export default function ({ userId, close }) {
 
     return (
         <div id="user-modal" className={`modal ${userId ? "shown" : ""}`} onClick={close}>
-            <div className="modal-content">
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                 <div className="close-container" onClick={close}>
                     <span className="close">&times;</span>
                 </div>
-                {user &&
+                
+                {!user && <div className="loader"></div>}
+                {user && (
                     <>
-                        <img src={user.avatar} />
-                        <h2>{user.firstName} {user.lastName}</h2>
-                        <p>Gender: {user.gender}</p>
-                        <p>Age: {user.age}</p>
-                        <p>Height: {user.height}</p>
-                        <p>Weight: {user.weight}</p>
-                    </>}
+                        <div className="modal-header">
+                            <div className="avatar-wrapper">
+                                <img src={user.avatar} alt={`${user.firstName} ${user.lastName}`} />
+                            </div>
+
+                            <div>
+                                <h2>{user.firstName} {user.lastName}</h2>
+                                <span className={`gender-badge ${user.gender}`}>
+                                    {user.gender}
+                                </span>
+                            </div>
+                        </div>
+
+                        <dl className="user-data">
+                            <div><dt>Возраст</dt><dd>{user.age}</dd></div>
+                            <div><dt>Рост</dt><dd>{user.height}</dd></div>
+                            <div><dt>Вес</dt><dd>{user.weight}</dd></div>
+                            <div><dt>Номер телефона</dt><dd>{user.phone}</dd></div>
+                            <div>
+                                <dt>Email</dt>
+                                <dd>
+                                    <a href={`mailto:${user.email}`} className="email-link">
+                                        {user.email}
+                                    </a>
+                                </dd>
+                            </div>
+                            <div className="full">
+                                <dt>Адрес</dt>
+                                <dd>
+                                    {user.address.address}, {user.address.city}, {user.address.state}
+                                </dd>
+                            </div>
+                        </dl>
+                    </>
+                )}
             </div>
         </div>
     )

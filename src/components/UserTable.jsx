@@ -75,66 +75,70 @@ export default function UserTable() {
     return (
         <>
             {loading && <div className="loader-container"><div className="loader"></div></div>}
-            <div className="overlay" onClick={() => setOpenFilterField(null)} />
-            <table className='users-table'>
-                <thead>
-                    <tr>
-                        {COLUMNS.map((column) => {
-                            const sortOrder =
-                                sortField?.field === column.field
-                                    ? sortField.order
-                                    : "none";
+            {openFilterField && <div className="overlay" onClick={() => setOpenFilterField(null)} />}
+            <div class="table-wrapper">
+                <div class="table-scroll">
+                    <table className='users-table'>
+                        <thead>
+                            <tr>
+                                {COLUMNS.map((column) => {
+                                    const sortOrder =
+                                        sortField?.field === column.field
+                                            ? sortField.order
+                                            : "none";
 
-                            const isFilterOpen =
-                                openFilterField === column.field;
+                                    const isFilterOpen =
+                                        openFilterField === column.field;
 
-                            const isFilterActive =
-                                filter?.fieldName === column.field;
+                                    const isFilterActive =
+                                        filter?.fieldName === column.field;
 
-                            const handleSort = () => {
-                                changeSorting(column.field);
-                            };
+                                    const handleSort = () => {
+                                        changeSorting(column.field);
+                                    };
 
-                            const handleToggleFilter = () => {
-                                setOpenFilterField((prev) =>
-                                    prev === column.field ? null : column.field
-                                );
-                            };
+                                    const handleToggleFilter = () => {
+                                        setOpenFilterField((prev) =>
+                                            prev === column.field ? null : column.field
+                                        );
+                                    };
 
-                            const handleFilterChange = (value) => {
-                                changeFiltering(column.field, value);
-                            };
+                                    const handleFilterChange = (value) => {
+                                        changeFiltering(column.field, value);
+                                    };
 
-                            return (
-                                <HeaderCell
-                                    key={column.field}
-                                    column={column}
-                                    sortOrder={sortOrder}
-                                    isFilterOpen={isFilterOpen}
-                                    isFilterActive={isFilterActive}
-                                    onSort={handleSort}
-                                    onToggleFilter={handleToggleFilter}
-                                    onFilterChange={handleFilterChange}
-                                    filter={filter}
-                                />
-                            );
-                        })}
-                    </tr>
-                </thead>
-                <tbody>
-                    {users.map((user) => (
-                        <tr key={user.id} onClick={() => setSelectedUserId(user.id)}>
-                            {COLUMNS.map((col) => (
-                                <td key={col.field} className={col.className}>
-                                    {col.render
-                                        ? col.render(user[col.field], user)
-                                        : user[col.field]}
-                                </td>
+                                    return (
+                                        <HeaderCell
+                                            key={column.field}
+                                            column={column}
+                                            sortOrder={sortOrder}
+                                            isFilterOpen={isFilterOpen}
+                                            isFilterActive={isFilterActive}
+                                            onSort={handleSort}
+                                            onToggleFilter={handleToggleFilter}
+                                            onFilterChange={handleFilterChange}
+                                            filter={filter}
+                                        />
+                                    );
+                                })}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {users.map((user) => (
+                                <tr key={user.id} onClick={() => setSelectedUserId(user.id)}>
+                                    {COLUMNS.map((col) => (
+                                        <td key={col.field} className={col.className}>
+                                            {col.render
+                                                ? col.render(user[col.field], user)
+                                                : user[col.field]}
+                                        </td>
+                                    ))}
+                                </tr>
                             ))}
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             <Pagination currentPage={page} totalPages={totalPages} onChange={setPage} />
             {selectedUserId && <UserModal userId={selectedUserId} close={() => setSelectedUserId(null)} />}
         </>

@@ -13,12 +13,12 @@
 
   --color-text-primary: #1f2124;
   --color-text-secondary: #2D3142;
-  --color-text-muted: rgba(31, 33, 36, 0.5);
+  --color-text-muted: #1f212480;
 
   --color-border: #ffffff;
 
-  --color-accent: #BC412B;
-  --color-accent-hover: #D26240;
+  --color-accent: #45a31f;
+  --color-accent-hover: #5dd240;
 
   --color-male-bg: #4bc6ff41;
   --color-female-bg: #ff8d4b28;
@@ -29,11 +29,15 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
 body {
   margin: 0;
   display: flex;
   min-width: 320px;
-  min-height: 100vh;
   color: var(--text);
 }
 
@@ -42,24 +46,10 @@ h1 {
   line-height: 1.1;
 }
 
-/* button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
+button {
+  all: unset;
   cursor: pointer;
-  transition: border-color 0.25s;
 }
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-} */
 
 @media (prefers-color-scheme: dark) {
   :root {
