@@ -1,5 +1,5 @@
 import "../styles/pagination.css"
-import { useMemo, useRef, useState, useEffect } from "react";
+import { useMemo, useState, useEffect } from "react";
 
 const getPages = (current, total, delta) => {
     const range = [];
@@ -28,11 +28,10 @@ const getPages = (current, total, delta) => {
         l = i;
     }
 
-    return rangeWithDots;
+    return [...new Set(rangeWithDots)];
 };
-export default function ({ currentPage, totalPages, onChange }) {
+export default function Pagination({ currentPage, totalPages, onChange }) {
 
-    const containerRef = useRef(null);
     const [delta, setDelta] = useState(1);
 
     useEffect(() => {
@@ -74,7 +73,7 @@ export default function ({ currentPage, totalPages, onChange }) {
 
                 {pages.map((page, index) =>
                     page.toString().includes("dots") ? (
-                        <span key={index} className="dots">
+                        <span key={`${page}-${index}`} className="dots">
                             ...
                         </span>
                     ) : (
