@@ -25,6 +25,20 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
   color: var(--color-text-secondary);
+  position: relative;
+}
+
+.users-table th:not(:last-child) {
+  border-right: 2px solid var(--color-border);
+}
+
+.users-table .th-content {
+  display: flex;
+  align-items: center;
+}
+
+.users-table .th-text {
+  margin-right: auto;
 }
 
 .users-table th:has(.sort-icon.asc),
@@ -32,7 +46,7 @@
   background-color: var(--color-header-sorted);
 }
 
-.sort-icon {
+.sort-icon, .filter-icon {
   color: var(--color-text-muted);
   width: 30px;
   height: 30px;
@@ -40,8 +54,9 @@
   cursor: pointer;
 }
 
-.sort-icon.asc .left-arrow,
-.sort-icon.desc .right-arrow {
+.sort-icon.ascending .left-arrow,
+.sort-icon.descending .right-arrow,
+.filter-icon.active {
   color: var(--color-accent);
 }
 

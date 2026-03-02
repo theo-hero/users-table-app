@@ -1,115 +1,131 @@
-import { useEffect, useState } from "react";
-import { fetchUsersData } from "../../service/api";
-import ArrowsIcon from "../assets/sorting.svg?react"
+import { useState } from "react";
 import UserModal from "./UserModal";
 import "../styles/table.css";
+import "../styles/loader.css";
 import Pagination from "./Pagination";
+import { useUsers } from "./useUsers";
+import HeaderCell from "./HeaderCell";
 
 const COLUMNS = [
-  {
-    label: 'Фамилия',
-    field: 'lastName',
-    sortable: true,
-    className: 'col-lastname',
-  },
-  {
-    label: 'Имя',
-    field: 'firstName',
-    sortable: true,
-    className: 'col-firstname',
-  },
-  {
-    label: 'Возраст',
-    field: 'age',
-    sortable: true,
-    className: 'col-age',
-  },
-  {
-    label: 'Пол',
-    field: 'gender',
-    sortable: true,
-    render: (value) => <div className={value}>{value}</div>,
-  },
-  {
-    label: 'Номер телефона',
-    field: 'phone',
-    sortable: true,
-  },
-  {
-    label: 'Email',
-    field: 'email',
-    sortable: false,
-    className: 'col-email',
-  },
-  {
-    label: 'Страна',
-    field: 'country',
-    sortable: false,
-  },
-  {
-    label: 'Город',
-    field: 'city',
-    sortable: false,
-  },
+    {
+        label: 'Фамилия',
+        field: 'lastName',
+        sortable: true,
+        className: 'col-lastname',
+    },
+    {
+        label: 'Имя',
+        field: 'firstName',
+        sortable: true,
+        className: 'col-firstname',
+    },
+    {
+        label: 'Возраст',
+        field: 'age',
+        sortable: true,
+        className: 'col-age',
+    },
+    {
+        label: 'Пол',
+        field: 'gender',
+        sortable: true,
+        filtrable: true,
+        render: (value) => <div className={value}>{value}</div>,
+        filterOptions: ["male", "female"]
+    },
+    {
+        label: 'Номер телефона',
+        field: 'phone',
+        sortable: true,
+    },
+    {
+        label: 'Email',
+        field: 'email',
+        sortable: false,
+        className: 'col-email',
+    },
+    {
+        label: 'Страна',
+        field: 'country',
+        sortable: false,
+    },
+    {
+        label: 'Город',
+        field: 'city',
+        sortable: false,
+    },
 ];
 
-export default function () {
+export default function UserTable() {
 
-    const [users, setUsers] = useState([]);
-    const [sortField, setSortField] = useState(null);
-    const [page, setPage] = useState(1);
     const [selectedUserId, setSelectedUserId] = useState(null);
-    const [total, setTotal] = useState(0);
-
-    useEffect(() => {
-        fetchUsersData(page - 1, sortField?.field, sortField?.order).then(data => {
-            console.log("data: ", data);
-            setUsers(data.users);
-            setTotal(Math.ceil(data.total / 30));
-        });
-    }, [page]);
-
-    const changeSorting = (fieldName) => {
-        if (sortField === null || sortField.field !== fieldName) {
-            setSortField({ field: fieldName, order: "desc" });
-            fetchUsersData(page - 1, fieldName, "desc").then(data => {
-                setUsers(data.users);
-            });
-        } else if (sortField.order === "desc") {
-            setSortField(prev => ({ ...prev, order: "asc" }));
-            fetchUsersData(page - 1, fieldName, "asc").then(data => {
-                setUsers(data.users);
-            });
-        } else {
-            setSortField(null);
-            fetchUsersData(page - 1).then(data => {
-                setUsers(data.users);
-            });
-        }
-    }
+    const [openFilterField, setOpenFilterField] = useState(null);
+    const {
+        users,
+        page,
+        totalPages,
+        sortField,
+        loading,
+        setPage,
+        changeSorting,
+        changeFiltering,
+        filter
+    } = useUsers();
 
     return (
         <>
+            {loading && <div className="loader-container"><div className="loader"></div></div>}
+            <div className="overlay" onClick={() => setOpenFilterField(null)} />
             <table className='users-table'>
                 <thead>
                     <tr>
-                        {COLUMNS.map((col, key) => (
-                            <th key={key}>
-                                <span>{col.label}</span>
-                                {col.sortable &&
-                                    <ArrowsIcon
-                                        onClick={() => changeSorting(col.field)}
-                                        className={`sort-icon ${sortField?.field === col.field && sortField.order}`}
-                                        width={24} height={24} />}
-                            </th>
-                        ))}
+                        {COLUMNS.map((column) => {
+                            const sortOrder =
+                                sortField?.field === column.field
+                                    ? sortField.order
+                                    : "none";
+
+                            const isFilterOpen =
+                                openFilterField === column.field;
+
+                            const isFilterActive =
+                                filter?.fieldName === column.field;
+
+                            const handleSort = () => {
+                                changeSorting(column.field);
+                            };
+
+                            const handleToggleFilter = () => {
+                                setOpenFilterField((prev) =>
+                                    prev === column.field ? null : column.field
+                                );
+                            };
+
+                            const handleFilterChange = (value) => {
+                                changeFiltering(column.field, value);
+                            };
+
+                            return (
+                                <HeaderCell
+                                    key={column.field}
+                                    column={column}
+                                    sortOrder={sortOrder}
+                                    isFilterOpen={isFilterOpen}
+                                    isFilterActive={isFilterActive}
+                                    onSort={handleSort}
+                                    onToggleFilter={handleToggleFilter}
+                                    onFilterChange={handleFilterChange}
+                                    filter={filter}
+                                />
+                            );
+                        })}
                     </tr>
                 </thead>
                 <tbody>
-                    {users && users.map((user) => (
+                    {users.map((user) => (
                         <tr key={user.id} onClick={() => setSelectedUserId(user.id)}>
-                            {COLUMNS.map((col, key) => (
-                                <td key={key} className={col.className}>
+                            {COLUMNS.map((col) => (
+                                <td key={col.field} className={col.className}>
                                     {col.render
                                         ? col.render(user[col.field], user)
                                         : user[col.field]}
@@ -119,8 +135,8 @@ export default function () {
                     ))}
                 </tbody>
             </table>
-            <Pagination currentPage={page} totalPages={total} onChange={setPage} />
-            <UserModal userId={selectedUserId} close={() => setSelectedUserId(null)} />
+            <Pagination currentPage={page} totalPages={totalPages} onChange={setPage} />
+            {selectedUserId && <UserModal userId={selectedUserId} close={() => setSelectedUserId(null)} />}
         </>
     )
 }
